@@ -25,7 +25,6 @@ namespace ServerSideSocket
             TcpListener listener = new TcpListener(IP, port);
             listener.Start();
 
-            Console.Clear();
             Console.WriteLine("Server is ready for a client to connect.");
 
             Socket clientSocket = listener.AcceptSocket();

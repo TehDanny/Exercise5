@@ -49,13 +49,10 @@ namespace ServerSideSocket
                     writer.WriteLine(DateTime.Now.ToLongTimeString());
                 else if (clientText.ToLower() == "date?")
                     writer.WriteLine(DateTime.Now.ToLongDateString());
-                else if (clientText.ToLower().Substring(0,3) == "add")
+                else if (clientText.ToLower().Substring(0, 3) == "add")
                     try
                     {
-                        int firstNumber = int.Parse(clientText.Split(' ')[1]);
-                        int secondNumber = int.Parse(clientText.Split(' ')[2]);
-                        int sum = firstNumber + secondNumber;
-                        writer.WriteLine("Sum: " + sum);
+                        writer.WriteLine("Sum: " + Add(clientText));
                     }
                     catch (Exception)
                     {
@@ -64,10 +61,7 @@ namespace ServerSideSocket
                 else if (clientText.ToLower().Substring(0, 3) == "sub")
                     try
                     {
-                        int firstNumber = int.Parse(clientText.Split(' ')[1]);
-                        int secondNumber = int.Parse(clientText.Split(' ')[2]);
-                        int differens = firstNumber - secondNumber;
-                        writer.WriteLine("Differens: " + differens);
+                        writer.WriteLine("Differens: " + Substract(clientText));
                     }
                     catch (Exception)
                     {
@@ -86,6 +80,22 @@ namespace ServerSideSocket
 
             Console.WriteLine("Press any key to continue");
             Console.ReadKey();
+        }
+
+        private int Add(string clientText)
+        {
+            int firstNumber = int.Parse(clientText.Split(' ')[1]);
+            int secondNumber = int.Parse(clientText.Split(' ')[2]);
+            int sum = firstNumber + secondNumber;
+            return sum;
+        }
+
+        private int Substract(string clientText)
+        {
+            int firstNumber = int.Parse(clientText.Split(' ')[1]);
+            int secondNumber = int.Parse(clientText.Split(' ')[2]);
+            int differens = firstNumber - secondNumber;
+            return differens;
         }
     }
 }

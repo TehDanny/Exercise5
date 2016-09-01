@@ -36,22 +36,32 @@ namespace ClientSideSocket
             string message;
             do
             {
-            Console.Write("Write a message to the server: ");
-            message = Console.ReadLine();
-            writer.WriteLine(message);
-            writer.Flush();
-            serverText = reader.ReadLine();
-            Console.WriteLine(serverText);
+                Console.Write("Write a message to the server: ");
+                message = Console.ReadLine();
+                try
+                {
+                    writer.WriteLine(message);
+                    writer.Flush();
+                    serverText = reader.ReadLine();
+                    Console.WriteLine(serverText);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Error message: {0}", e.Message);
+                    Console.WriteLine("Press enter to continue...");
+                    Console.ReadLine();
+                }
+
             } while (message.ToLower() != "exit");
 
             Console.WriteLine("Shutting down connection...");
-            writer.Close();
             reader.Close();
+            writer.Close();
             stream.Close();
             server.Close();
 
-            Console.WriteLine("Press any key to continue");
-            Console.ReadKey();
+            Console.WriteLine("Press enter to continue...");
+            Console.ReadLine();
         }
 
         private string GetConnectionInfo()

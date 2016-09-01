@@ -12,7 +12,16 @@ namespace ServerSideSocket
 {
     class ClientHandler
     {
-        internal void Start(Socket clientSocket, int clientNumber)
+        private Socket clientSocket;
+        private int clientNumber;
+
+        public ClientHandler(Socket clientSocket, int clientNumber)
+        {
+            this.clientSocket = clientSocket;
+            this.clientNumber = clientNumber;
+        }
+
+        internal void Start()
         {
             NetworkStream stream = new NetworkStream(clientSocket);
             StreamWriter writer = new StreamWriter(stream);
@@ -53,6 +62,8 @@ namespace ServerSideSocket
                     writer.WriteLine("Unknown command.");
                 writer.Flush();
             } while (clientText.ToLower() != "exit");
+
+            Console.WriteLine("Client {0} disconnected.", clientNumber);
 
             reader.Close();
             writer.Close();

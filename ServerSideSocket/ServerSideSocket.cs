@@ -36,12 +36,10 @@ namespace ServerSideSocket
                 Console.WriteLine("Server is ready for a new client to connect.");
 
                 Socket clientSocket = listener.AcceptSocket();
-                Console.WriteLine("A connection has been made.");
-
                 clientNumber++;
+                Console.WriteLine("Client {0}, connected.", clientNumber);
 
-                ClientHandler clientHandler = new ClientHandler();
-                Thread ClientHandlerThread = new Thread(() => clientHandler.Start(clientSocket, clientNumber));
+                Thread ClientHandlerThread = new Thread(new ClientHandler(clientSocket, clientNumber).Start);
                 ClientHandlerThread.Start();
             }
 

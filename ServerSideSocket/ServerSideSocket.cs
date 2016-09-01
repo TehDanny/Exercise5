@@ -27,16 +27,22 @@ namespace ServerSideSocket
             TcpListener listener = new TcpListener(IP, port);
             listener.Start();
 
-            while (true)
+            int clientNumber = 0;
+
+            stop = false;
+
+            while (!stop)
             {
                 Console.WriteLine("Server is ready for a new client to connect.");
 
                 Socket clientSocket = listener.AcceptSocket();
-
                 Console.WriteLine("A connection has been made.");
 
+                clientNumber++;
+
                 ClientHandler clientHandler = new ClientHandler();
-                clientHandler.Start(clientSocket);
+                Thread ClientHandlerThread = new Thread(() => clientHandler.Start(clientSocket, clientNumber));
+                ClientHandlerThread.Start();
             }
 
             Console.WriteLine("Shutting down connection...");

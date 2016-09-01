@@ -12,20 +12,20 @@ namespace ServerSideSocket
 {
     class ClientHandler
     {
-        internal void Start(Socket clientSocket)
+        internal void Start(Socket clientSocket, int clientNumber)
         {
             NetworkStream stream = new NetworkStream(clientSocket);
             StreamWriter writer = new StreamWriter(stream);
             StreamReader reader = new StreamReader(stream);
 
-            writer.WriteLine("The server is ready");
+            writer.WriteLine("The server is ready. Close connection with the \"EXIT\" command.");
             writer.Flush();
 
             string clientText;
             do
             {
                 clientText = reader.ReadLine();
-                Console.WriteLine("Client says: " + clientText);
+                Console.WriteLine("Client {0} says: {1}", clientNumber, clientText);
 
                 if (clientText.ToLower() == "time?")
                     writer.WriteLine(DateTime.Now.ToLongTimeString());
@@ -34,7 +34,7 @@ namespace ServerSideSocket
                 else if (clientText.ToLower().Substring(0, 3) == "add")
                     try
                     {
-                        writer.WriteLine("Sum: " + CommandHandler.Add(clientText));
+                        writer.WriteLine("Sum: {0}", CommandHandler.Add(clientText));
                     }
                     catch (Exception)
                     {
@@ -43,13 +43,13 @@ namespace ServerSideSocket
                 else if (clientText.ToLower().Substring(0, 3) == "sub")
                     try
                     {
-                        writer.WriteLine("Differens: " + CommandHandler.Substract(clientText));
+                        writer.WriteLine("Differens: {0}", CommandHandler.Substract(clientText));
                     }
                     catch (Exception)
                     {
                         writer.WriteLine("\"Sub\" syntax invalid.");
                     }
-                else
+                else if (clientText.ToLower() != "exit")
                     writer.WriteLine("Unknown command.");
                 writer.Flush();
             } while (clientText.ToLower() != "exit");
